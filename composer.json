@@ -18,5 +18,20 @@
     },
     "autoload": {
         "psr-4": { "CampaignChain\\Milestone\\ScheduledMilestoneBundle\\": "" }
+    },
+    "extra": {
+        "campaignchain": {
+            "kernel": {
+                "classes": [
+                    "CampaignChain\\Milestone\\ScheduledMilestoneBundle\\CampaignChainMilestoneScheduledMilestoneBundle"
+                ],
+                "routing":
+                {
+                    "name": "campaignchain_milestone_scheduled_milestone",
+                    "resource": "@CampaignChainMilestoneScheduledMilestoneBundle/Resources/config/routing.yml",
+                    "prefix": "/"
+                }
+            }
+        }
     }
 }
