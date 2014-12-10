@@ -12,9 +12,9 @@
         }
     ],
     "require": {
-        "campaignchain/core": "1.0.0-alpha.3",
-        "campaignchain/hook-due": "1.0.0-alpha.3",
-        "campaignchain/hook-assignee": "1.0.0-alpha.3"
+        "campaignchain/core": "dev-master",
+        "campaignchain/hook-due": "dev-master",
+        "campaignchain/hook-assignee": "dev-master"
     },
     "autoload": {
         "psr-4": { "CampaignChain\\Milestone\\ScheduledMilestoneBundle\\": "" }
