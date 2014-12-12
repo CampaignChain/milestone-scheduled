@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "campaignchain/core": ">= 1.0.0-alpha.3, != dev-master",
+        "campaignchain/core": ">= dev-1.0.0-alpha.3, != dev-master",
         "campaignchain/hook-due": ">= 1.0.0-alpha.3",
         "campaignchain/hook-assignee": ">= 1.0.0-alpha.3"
     },
