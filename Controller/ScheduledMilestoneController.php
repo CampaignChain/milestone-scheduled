@@ -175,46 +175,13 @@ class ScheduledMilestoneController extends Controller
         $repository->persist($milestone);
 
         $hookService = $this->get('campaignchain.core.hook');
-        $milestone = $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $milestone, $data);
+        $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $milestone, $data);
 
         $repository->flush();
 
         $encoders = array(new JsonEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
         $serializer = new Serializer($normalizers, $encoders);
-
-        $response = new Response($serializer->serialize($responseData, 'json'));
-        return $response->setStatusCode(Response::HTTP_OK);
-    }
-
-    public function moveApiAction(Request $request)
-    {
-        $encoders = array(new JsonEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-
-        $responseData = array();
-
-        $id = $request->request->get('id');
-        $newDue = new \DateTime($request->request->get('due_date'));
-
-        $milestone = $this->getMilestone($id);
-        $responseData['id'] = $milestone->getId();
-
-        $oldDue = clone $milestone->getDue();
-        $responseData['old_due_date'] = $oldDue->format(\DateTime::ISO8601);
-
-        // Calculate time difference.
-        $interval = $milestone->getDue()->diff($newDue);
-        $responseData['interval']['object'] = json_encode($interval, true);
-        $responseData['interval']['string'] = $interval->format(self::FORMAT_DATEINTERVAL);
-
-        // Set new due date.
-        $milestone->setDue(new \DateTime($milestone->getDue()->add($interval)->format(\DateTime::ISO8601)));
-        $responseData['new_due_date'] = $milestone->getDue()->format(\DateTime::ISO8601);
-
-        $repository = $this->getDoctrine()->getManager();
-        $repository->flush();
 
         $response = new Response($serializer->serialize($responseData, 'json'));
         return $response->setStatusCode(Response::HTTP_OK);
