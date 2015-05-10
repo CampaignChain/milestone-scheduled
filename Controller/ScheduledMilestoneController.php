@@ -91,10 +91,11 @@ class ScheduledMilestoneController extends Controller
         }
 
         return $this->render(
-            'CampaignChainCoreBundle:Base:new.html.twig',
+            'CampaignChainCoreBundle:Milestone:new.html.twig',
             array(
-                'page_title' => 'Create New Milestone',
+                'page_title' => 'Create Scheduled Milestone',
                 'form' => $form->createView(),
+                'milestone' => $milestone,
             ));
 
         return $this->form($request, $milestone, 'Create New Milestone');
@@ -132,10 +133,11 @@ class ScheduledMilestoneController extends Controller
         }
 
         return $this->render(
-            'CampaignChainCoreBundle:Base:new.html.twig',
+            'CampaignChainCoreBundle:Milestone:new.html.twig',
             array(
-            'page_title' => 'Edit Milestone',
+            'page_title' => 'Edit Scheduled Milestone',
             'form' => $form->createView(),
+            'milestone' => $milestone,
         ));
     }
 
@@ -155,7 +157,7 @@ class ScheduledMilestoneController extends Controller
         return $this->render(
             'CampaignChainCoreBundle:Base:new_modal.html.twig',
             array(
-                'page_title' => 'Edit Milestone',
+                'page_title' => 'Edit Scheduled Milestone',
                 'form' => $form->createView(),
             ));
     }
