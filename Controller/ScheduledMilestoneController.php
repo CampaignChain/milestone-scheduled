@@ -43,14 +43,18 @@ class ScheduledMilestoneController extends Controller
             ));
     }
 
-    public function newAction(Request $request)
+    public function newAction(Request $request, $campaign)
     {
+        $campaignService = $this->get('campaignchain.core.campaign');
+        $campaign = $campaignService->getCampaign($campaign);
+
         $milestoneType = $this->get('campaignchain.core.form.type.milestone');
         $milestoneType->setBundleName(self::BUNDLE_NAME);
         $milestoneType->setModuleIdentifier(self::MODULE_IDENTIFIER);
-        //$milestoneType->setCampaign($milestone);
+        $milestoneType->setCampaign($campaign);
 
         $milestone = new Milestone();
+        $milestone->setCampaign($campaign);
 
         $form = $this->createForm($milestoneType, $milestone);
 
@@ -86,16 +90,11 @@ class ScheduledMilestoneController extends Controller
             return $this->redirect($this->generateUrl('campaignchain_core_milestone'));
         }
 
-        // Retrieve campaign data for drop-down list
-        $campaignService = $this->get('campaignchain.core.campaign');
-        $campaignsDatesJson = $campaignService->getCampaignsDatesJson();
-
         return $this->render(
-            'CampaignChainMilestoneScheduledMilestoneBundle:ScheduledMilestone:new.html.twig',
+            'CampaignChainCoreBundle:Base:new.html.twig',
             array(
                 'page_title' => 'Create New Milestone',
                 'form' => $form->createView(),
-                'campaigns_dates' => $campaignsDatesJson,
             ));
 
         return $this->form($request, $milestone, 'Create New Milestone');
@@ -109,6 +108,7 @@ class ScheduledMilestoneController extends Controller
         $milestoneType = $this->get('campaignchain.core.form.type.milestone');
         $milestoneType->setBundleName(self::BUNDLE_NAME);
         $milestoneType->setModuleIdentifier(self::MODULE_IDENTIFIER);
+        $milestoneType->setCampaign($milestone->getCampaign());
 
         $form = $this->createForm($milestoneType, $milestone);
 
@@ -148,6 +148,7 @@ class ScheduledMilestoneController extends Controller
         $milestoneType->setBundleName(self::BUNDLE_NAME);
         $milestoneType->setModuleIdentifier(self::MODULE_IDENTIFIER);
         $milestoneType->setView('modal');
+        $milestoneType->setCampaign($milestone->getCampaign());
 
         $form = $this->createForm($milestoneType, $milestone);
 

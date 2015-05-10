@@ -6,7 +6,7 @@
 # file that was distributed with this source code.
 
 campaignchain_milestone_scheduled_new:
-    pattern:  /milestone/scheduled/new
+    pattern:  /milestone/scheduled/new/{campaign}
     defaults: { _controller: CampaignChainMilestoneScheduledMilestoneBundle:ScheduledMilestone:new }
 
 campaignchain_milestone_scheduled_edit:
