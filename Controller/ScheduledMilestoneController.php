@@ -168,7 +168,7 @@ class ScheduledMilestoneController extends Controller
 
         $data = $request->get('campaignchain_core_milestone');
 
-        $responseData['data'] = $data;
+        // $responseData['payload'] = $data;
 
         $milestoneService = $this->get('campaignchain.core.milestone');
         $milestone = $milestoneService->getMilestone($id);
@@ -181,6 +181,10 @@ class ScheduledMilestoneController extends Controller
         $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $milestone, $data);
 
         $repository->flush();
+
+        $responseData['start_date'] =
+        $responseData['end_date'] =
+            $milestone->getStartDate()->format(\DateTime::ISO8601);
 
         $encoders = array(new JsonEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
