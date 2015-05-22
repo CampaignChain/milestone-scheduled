@@ -14,10 +14,6 @@ modules:
             edit_modal: campaignchain_milestone_scheduled_edit_modal
             edit_api: campaignchain_milestone_scheduled_edit_api
         hooks:
-            campaignchain-due: true
-            campaignchain-duration: false
-            campaignchain-budget: false
-            campaignchain-work: false
-            campaignchain-milestone: false
-            campaignchain-log: false
-            campaignchain-assignee: true
+            default:
+                campaignchain-due: true
+                campaignchain-assignee: true
