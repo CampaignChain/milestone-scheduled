@@ -1,7 +1,7 @@
 {
     "name": "campaignchain/milestone-scheduled",
     "description": "A milestone with a due date.",
-    "keywords": ["milestone","scheduled"],
+    "keywords": ["milestone","scheduled","campaignchain"],
     "type": "campaignchain-milestone",
     "homepage": "http://www.campaignchain.com",
     "license": "Apache-2.0",
