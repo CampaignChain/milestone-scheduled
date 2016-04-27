@@ -14,9 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use CampaignChain\CoreBundle\Entity\Milestone;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 
 class ScheduledMilestoneController extends Controller
 {
@@ -61,24 +58,24 @@ class ScheduledMilestoneController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $repository = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
 
             // Make sure that data stays intact by using transactions.
             try {
-                $repository->getConnection()->beginTransaction();
+                $em->getConnection()->beginTransaction();
 
-                $repository->persist($milestone);
+                $em->persist($milestone);
                 // We need the milestone ID for storing the hooks. Hence we must flush here.
-                $repository->flush();
+                $em->flush();
 
                 $hookService = $this->get('campaignchain.core.hook');
                 $milestone = $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $milestone, $form, true);
 
-                $repository->flush();
+                $em->flush();
 
-                $repository->getConnection()->commit();
+                $em->getConnection()->commit();
             } catch (\Exception $e) {
-                $repository->getConnection()->rollback();
+                $em->getConnection()->rollback();
                 throw $e;
             }
 
@@ -116,13 +113,13 @@ class ScheduledMilestoneController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $repository = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
 
             $hookService = $this->get('campaignchain.core.hook');
             $milestone = $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $milestone, $form);
-            $repository->persist($milestone);
+            $em->persist($milestone);
 
-            $repository->flush();
+            $em->flush();
 
             $this->get('session')->getFlashBag()->add(
                 'success',
@@ -174,24 +171,21 @@ class ScheduledMilestoneController extends Controller
         $milestone = $milestoneService->getMilestone($id);
         $milestone->setName($data['name']);
 
-        $repository = $this->getDoctrine()->getManager();
-        $repository->persist($milestone);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($milestone);
 
         $hookService = $this->get('campaignchain.core.hook');
         $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $milestone, $data);
 
-        $repository->flush();
+        $em->flush();
 
         $responseData['start_date'] =
         $responseData['end_date'] =
             $milestone->getStartDate()->format(\DateTime::ISO8601);
 
-        $encoders = array(new JsonEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
+        $serializer = $this->get('campaignchain.core.serializer.default');
 
-        $response = new Response($serializer->serialize($responseData, 'json'));
-        return $response->setStatusCode(Response::HTTP_OK);
+        return new Response($serializer->serialize($responseData, 'json'));
     }
 
     public function getMilestone($id){
