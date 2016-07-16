@@ -17,8 +17,13 @@
 
 namespace CampaignChain\Milestone\ScheduledMilestoneBundle;
 
+use CampaignChain\Milestone\ScheduledMilestoneBundle\DependencyInjection\CampaignChainMilestoneScheduledMilestoneExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CampaignChainMilestoneScheduledMilestoneBundle extends Bundle
 {
+    public function getContainerExtension()
+    {
+        return new CampaignChainMilestoneScheduledMilestoneExtension();
+    }
 }
