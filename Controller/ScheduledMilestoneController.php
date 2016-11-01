@@ -17,6 +17,7 @@
 
 namespace CampaignChain\Milestone\ScheduledMilestoneBundle\Controller;
 
+use CampaignChain\CoreBundle\EntityService\MilestoneService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use CampaignChain\CoreBundle\Entity\Milestone;
 use Symfony\Component\HttpFoundation\Request;
@@ -195,17 +196,18 @@ class ScheduledMilestoneController extends Controller
         return new Response($serializer->serialize($responseData, 'json'));
     }
 
-    public function getMilestone($id){
-        $milestone = $this->getDoctrine()
-            ->getRepository('CampaignChainCoreBundle:Milestone')
-            ->find($id);
+    public function readAction(Request $request, $id)
+    {
+        /** @var MilestoneService $milestoneService */
+        $milestoneService = $this->get('campaignchain.core.milestone');
+        /** @var Milestone $milestone */
+        $milestone = $milestoneService->getMilestone($id);
 
-        if (!$milestone) {
-            throw new \Exception(
-                'No milestone found for id '.$id
-            );
-        }
-
-        return $milestone;
+        return $this->render(
+            'CampaignChainCoreBundle:Milestone:read.html.twig',
+            array(
+                'page_title' => 'View Milestone',
+                'milestone' => $milestone,
+            ));
     }
 }

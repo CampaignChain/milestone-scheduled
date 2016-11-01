@@ -29,3 +29,7 @@ campaignchain_milestone_scheduled_edit_api:
     defaults: { _controller: CampaignChainMilestoneScheduledMilestoneBundle:ScheduledMilestone:editApi }
     options:
         expose: true
+
+campaignchain_milestone_scheduled_read:
+    pattern:  /milestone/scheduled/{id}
+    defaults: { _controller: CampaignChainMilestoneScheduledMilestoneBundle:ScheduledMilestone:read }

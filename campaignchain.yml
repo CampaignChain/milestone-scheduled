@@ -20,6 +20,7 @@ modules:
             edit: campaignchain_milestone_scheduled_edit
             edit_modal: campaignchain_milestone_scheduled_edit_modal
             edit_api: campaignchain_milestone_scheduled_edit_api
+            read: campaignchain_milestone_scheduled_read
         hooks:
             default:
                 campaignchain-due: true
