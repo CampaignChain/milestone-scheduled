@@ -29,6 +29,11 @@ class ScheduledMilestoneController extends Controller
     const MODULE_IDENTIFIER = 'campaignchain-scheduled';
     const FORMAT_DATEINTERVAL = 'Years: %Y, months: %m, days: %d, hours: %h, minutes: %i, seconds: %s';
 
+    public function getLogger()
+    {
+        return $this->has('monolog.logger.external') ? $this->get('monolog.logger.external') : $this->get('monolog.logger');
+    }
+
     public function indexAction(){
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
@@ -208,9 +213,15 @@ class ScheduledMilestoneController extends Controller
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
 
+            if($this->get('kernel')->getEnvironment() == 'dev'){
+                $message = $e->getMessage().' '.$e->getFile().' '.$e->getLine().'<br/>'.$e->getTraceAsString();
+            } else {
+                $message = $e->getMessage();
+            }
+
             $this->addFlash(
                 'warning',
-                $e->getMessage().' '.$e->getFile().' '.$e->getLine().' '.$e->getTraceAsString()
+                $message
             );
 
             $this->getLogger()->error($e->getMessage(), array(
