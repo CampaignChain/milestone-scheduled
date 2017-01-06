@@ -17,6 +17,7 @@
 
 namespace CampaignChain\Milestone\ScheduledMilestoneBundle\Controller;
 
+use CampaignChain\Campaign\TemplateBundle\EntityService\HookService;
 use CampaignChain\CoreBundle\EntityService\MilestoneService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use CampaignChain\CoreBundle\Entity\Milestone;
@@ -81,8 +82,10 @@ class ScheduledMilestoneController extends Controller
                 // We need the milestone ID for storing the hooks. Hence we must flush here.
                 $em->flush();
 
+                /** @var HookService $hookService */
                 $hookService = $this->get('campaignchain.core.hook');
-                $milestone = $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $milestone, $form, true);
+                $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $milestone, $form, true);
+                $milestone = $hookService->getEntity();
 
                 $em->flush();
 
@@ -128,8 +131,10 @@ class ScheduledMilestoneController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
+            /** @var HookService $hookService */
             $hookService = $this->get('campaignchain.core.hook');
-            $milestone = $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $milestone, $form);
+            $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $milestone, $form);
+            $milestone = $hookService->getEntity();
             $em->persist($milestone);
 
             $em->flush();
@@ -199,8 +204,10 @@ class ScheduledMilestoneController extends Controller
             $em->getConnection()->beginTransaction();
             $em->persist($milestone);
 
+            /** @var HookService $hookService */
             $hookService = $this->get('campaignchain.core.hook');
             $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $milestone, $data);
+            $milestone = $hookService->getEntity();
 
             $em->flush();
 
