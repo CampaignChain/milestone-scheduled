@@ -13,23 +13,23 @@
 # limitations under the License.
 
 campaignchain_milestone_scheduled_new:
-    pattern:  /milestone/scheduled/new/{campaign}
+    path:  /milestone/scheduled/new/{campaign}
     defaults: { _controller: CampaignChainMilestoneScheduledMilestoneBundle:ScheduledMilestone:new }
 
 campaignchain_milestone_scheduled_edit:
-    pattern:  /milestone/scheduled/{id}/edit
+    path:  /milestone/scheduled/{id}/edit
     defaults: { _controller: CampaignChainMilestoneScheduledMilestoneBundle:ScheduledMilestone:edit }
 
 campaignchain_milestone_scheduled_edit_modal:
-    pattern:  /modal/milestone/scheduled/{id}/edit
+    path:  /modal/milestone/scheduled/{id}/edit
     defaults: { _controller: CampaignChainMilestoneScheduledMilestoneBundle:ScheduledMilestone:editModal }
 
 campaignchain_milestone_scheduled_edit_api:
-    pattern:  /api/private/milestone/scheduled/{id}/edit
+    path:  /api/private/milestone/scheduled/{id}/edit
     defaults: { _controller: CampaignChainMilestoneScheduledMilestoneBundle:ScheduledMilestone:editApi }
     options:
         expose: true
 
 campaignchain_milestone_scheduled_read:
-    pattern:  /milestone/scheduled/{id}
+    path:  /milestone/scheduled/{id}
     defaults: { _controller: CampaignChainMilestoneScheduledMilestoneBundle:ScheduledMilestone:read }
